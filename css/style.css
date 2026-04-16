@@ -1,0 +1,118 @@
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    margin: 0;
+    background-color: #120f2a;
+    color: #e2e8f0;
+}
+
+/* Header */
+header {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+/* Navigation */
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    background-color: #000000;
+    padding: 15px;
+}
+
+nav a {
+    color: #e2e8f0;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: #38bdf8;
+}
+
+/* Main Layout */
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Sections */
+section {
+    width: 80%;
+    max-width: 800px;
+    background: #1e293b;
+    margin: 15px;
+    padding: 25px;
+    border-radius: 10px;
+}
+
+/* Skills */
+.skills-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.skills-container div {
+    background: #334155;
+    padding: 10px 15px;
+    border-radius: 6px;
+}
+
+.skills-container div:hover {
+    background: #38bdf8;
+    color: black;
+}
+
+/* Project */
+.project-card {
+    background: #435875;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.project-card div{
+    background: #334155;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.project-card div:hover {
+    background: #38bdf8;
+    color: black;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 15px;
+    background: #1e293b;
+    margin-top: 20px;
+}
+
+@media (max-width: 600px) {
+
+    header {
+        padding: 20px;
+    }
+
+    nav {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    section {
+        width: 95%;
+        margin: 10px 0;
+    }
+
+    .skills-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+}
