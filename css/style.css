@@ -89,22 +89,27 @@ section:hover {
 /* Skills */
 .skills-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 200px));
+    justify-content: center;
     gap: 15px;
     margin-top: 10px;
+    width: 100%;
 }
 
 .skills-container div {
     flex: 1 1 120px;
     text-align: center;
+    word-wrap: break-word;
     background: #334155;
     padding: 10px 15px;
     border-radius: 6px;
+    transition: 0.2s;
 }
 
 .skills-container div:hover {
     background: #38bdf8;
     color: black;
+    transform: scale(1.05);
 }
 
 /* Project */
