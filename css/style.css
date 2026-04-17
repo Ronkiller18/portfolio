@@ -1,15 +1,49 @@
 body {
     font-family: system-ui, -apple-system, sans-serif;
     margin: 0;
-    background-color: #120f2a;
+    background-color: #0f172a;
     color: #e2e8f0;
 }
 
-/* Header */
+section {
+    padding: 50px;
+}
+
+h1, h2 {
+    margin-bottom: 10px;
+}
+
+/* scroll */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Dark mode */
+body.dark {
+    background-color: #121212;
+    color: white;
+}
+
+/* Button */
+button {
+    padding: 10px 15px;
+    margin: 10px 5px;
+    border: none;
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+/* Header
 header {
     text-align: center;
     padding: 40px 20px;
-}
+} */
 
 /* Navigation */
 nav {
@@ -47,6 +81,18 @@ section {
     border-radius: 10px;
 }
 
+section:hover {
+    transform: translateY(-3px);
+    transition: 0.3s;
+}
+
+/* Hero */
+#hero {
+    /*padding: 60px;*/
+    text-align: center;
+    background-color: #1e293b;
+}
+
 /* Skills */
 .skills-container {
     display: flex;
@@ -67,6 +113,12 @@ section {
 }
 
 /* Project */
+#projects {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
 .project-card {
     background: #435875;
     padding: 15px;
@@ -74,14 +126,7 @@ section {
     margin-top: 10px;
 }
 
-.project-card div{
-    background: #334155;
-    padding: 15px;
-    border-radius: 8px;
-    margin-top: 10px;
-}
-
-.project-card div:hover {
+.project-card:hover {
     background: #38bdf8;
     color: black;
 }
