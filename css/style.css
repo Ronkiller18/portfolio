@@ -39,12 +39,6 @@ button:hover {
     background-color: #555;
 }
 
-/* Header
-header {
-    text-align: center;
-    padding: 40px 20px;
-} */
-
 /* Navigation */
 nav {
     display: flex;
@@ -88,20 +82,21 @@ section:hover {
 
 /* Hero */
 #hero {
-    /*padding: 60px;*/
     text-align: center;
     background-color: #1e293b;
 }
 
 /* Skills */
 .skills-container {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     gap: 15px;
     margin-top: 10px;
 }
 
 .skills-container div {
+    flex: 1 1 120px;
+    text-align: center;
     background: #334155;
     padding: 10px 15px;
     border-radius: 6px;
