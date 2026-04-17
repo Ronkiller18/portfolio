@@ -8,5 +8,5 @@ let button = document.getElementById("helloBtn");
 let message = document.getElementById("message");
 
 button.addEventListener("click", function () {
-    message.textContent = "Hello Rushikesh 👋 Welcome to my portfolio!";
+    message.textContent = "Hello " + name + " 👋";
 });
