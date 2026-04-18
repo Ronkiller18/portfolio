@@ -36,6 +36,17 @@ section {
     transition: transform 0.3s ease;
 }
 
+/* =========================
+  Anchor offset fix 
+  (for sticky navbar)
+========================= */
+#hero,
+#about,
+#skills,
+#projects,
+#contact {
+    scroll-margin-top: 80px;
+}
 
 /* =========================
    Navigation
@@ -61,6 +72,14 @@ nav a:hover {
     color: #38bdf8;
 }
 
+nav a::after {
+    content: "|";
+    margin-left: 10px;
+}
+
+nav a:last-child::after {
+    content: "";
+}
 
 /* =========================
    Buttons
@@ -213,13 +232,23 @@ body.dark .project-card {
 ========================= */
 @media (max-width: 600px) {
     nav {
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
         gap: 10px;
     }
 
     section {
         width: 95%;
         margin: 10px 0;
+    }
+
+    #hero,
+    #about,
+    #skills,
+    #projects,
+    #contact {
+        scroll-margin-top: 100px;
     }
 
     .skills-container {
