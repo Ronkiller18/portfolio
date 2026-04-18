@@ -1,3 +1,6 @@
+/* =========================
+   Base / Reset
+========================= */
 body {
     font-family: system-ui, -apple-system, sans-serif;
     margin: 0;
@@ -5,47 +8,47 @@ body {
     color: #e2e8f0;
 }
 
-section {
-    padding: 50px;
-}
-
 h1, h2 {
     margin-bottom: 10px;
 }
 
-/* scroll */
 html {
     scroll-behavior: smooth;
 }
 
-/* Dark mode */
-body.dark {
-    background-color: #121212;
-    color: white;
+
+/* =========================
+   Layout
+========================= */
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* Button */
-button {
-    padding: 10px 15px;
-    margin: 10px 5px;
-    border: none;
-    background-color: #333;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
+section {
+    width: 80%;
+    max-width: 800px;
+    margin: 15px;
+    padding: 25px;
+    border-radius: 10px;
+    background: #1e293b;
+    transition: transform 0.3s ease;
 }
 
-button:hover {
-    background-color: #555;
-}
 
-/* Navigation */
+/* =========================
+   Navigation
+========================= */
 nav {
     display: flex;
     justify-content: center;
     gap: 20px;
-    background-color: #000000;
     padding: 15px;
+    background-color: #000;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 nav a {
@@ -58,35 +61,69 @@ nav a:hover {
     color: #38bdf8;
 }
 
-/* Main Layout */
-main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+
+/* =========================
+   Buttons
+========================= */
+button {
+    padding: 10px 15px;
+    margin: 10px 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
-/* Sections */
-section {
-    width: 80%;
-    max-width: 800px;
-    background: #1e293b;
-    margin: 15px;
-    padding: 25px;
-    border-radius: 10px;
+button:hover {
+    background-color: #555;
 }
 
-section:hover {
-    transform: translateY(-3px);
-    transition: 0.3s;
-}
 
-/* Hero */
+/* =========================
+   Hero
+========================= */
 #hero {
     text-align: center;
-    background-color: #1e293b;
 }
 
-/* Skills */
+#hero:hover {
+    transform: translateY(-3px);
+}
+
+
+/* =========================
+   Reveal Animation
+========================= */
+.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    will-change: opacity, transform;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* =========================
+   Section Interaction
+========================= */
+.section-content {
+    transition: transform 0.3s ease;
+}
+
+.section-content:hover {
+    transform: translateY(-3px);
+}
+
+
+/* =========================
+   Skills
+========================= */
 .skills-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 200px));
@@ -97,13 +134,11 @@ section:hover {
 }
 
 .skills-container div {
-    flex: 1 1 120px;
     text-align: center;
-    word-wrap: break-word;
     background: #334155;
     padding: 10px 15px;
     border-radius: 6px;
-    transition: 0.2s;
+    transition: transform 0.2s ease, background 0.2s ease;
 }
 
 .skills-container div:hover {
@@ -112,7 +147,10 @@ section:hover {
     transform: scale(1.05);
 }
 
-/* Project */
+
+/* =========================
+   Projects
+========================= */
 #projects {
     display: flex;
     flex-direction: column;
@@ -124,27 +162,56 @@ section:hover {
     padding: 15px;
     border-radius: 8px;
     margin-top: 10px;
+    transition: background 0.2s ease;
 }
 
 .project-card:hover {
     background: #38bdf8;
     color: black;
+    transform: scale(1.02);
 }
 
-/* Footer */
+
+/* =========================
+   Footer
+========================= */
 footer {
     text-align: center;
     padding: 15px;
-    background: #1e293b;
     margin-top: 20px;
+    background: #1e293b;
 }
 
+
+/* =========================
+   Dark Mode
+========================= */
+body.dark {
+    background-color: #121212;
+    color: #39FF14;
+}
+
+body.dark nav {
+    background: #000;
+}
+
+body.dark section {
+    background: #1e1e1e;
+}
+
+body.dark .skills-container div {
+    background: #2a2a2a;
+}
+
+body.dark .project-card {
+    background: #2a2a2a;
+}
+
+
+/* =========================
+   Responsive
+========================= */
 @media (max-width: 600px) {
-
-    header {
-        padding: 20px;
-    }
-
     nav {
         flex-direction: column;
         gap: 10px;
@@ -156,8 +223,6 @@ footer {
     }
 
     .skills-container {
-        flex-direction: column;
-        align-items: center;
+        grid-template-columns: 1fr;
     }
-
 }
