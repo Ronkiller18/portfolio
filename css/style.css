@@ -8,6 +8,7 @@ html {
 
 body {
     font-family: system-ui, -apple-system, sans-serif;
+    animation: fadeIn 0.6s ease;
     margin: 0;
     background-color: #0f172a;
     color: #e2e8f0;
@@ -56,12 +57,30 @@ nav {
 nav a {
     color: #e2e8f0;
     text-decoration: none;
+    position: relative;
     font-weight: bold;
 }
 
 nav a:hover,
 nav a.active {
     color: #38bdf8;
+}
+
+nav a::before {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    width: 0%;
+    height: 2px;
+    background: #38bdf8;
+    transition: width 0.3s ease, left 0.3s ease;
+}
+
+nav a:hover::before,
+nav a.active::before {
+    width: 100%;
+    left: 0;
 }
 
 nav a::after {
@@ -72,7 +91,6 @@ nav a::after {
 nav a:last-child::after {
     content: "";
 }
-
 
 /* =========================
    4. Buttons
@@ -93,6 +111,19 @@ button:hover {
     transform: translateY(-1px);
 }
 
+a:focus, button:focus {
+    outline: 2px solid #38bdf8;
+    outline-offset: 2px;
+}
+
+a, button {
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+a:hover, button:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
+}
 
 /* =========================
    5. Hero
@@ -101,14 +132,13 @@ button:hover {
     text-align: center;
 }
 
-
 /* =========================
    6. Animations
 ========================= */
 .reveal {
     opacity: 0;
     transform: translateY(40px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
+    transition: opacity 0.7s ease, transform 0.7s ease;
 }
 
 .reveal.active {
@@ -116,6 +146,15 @@ button:hover {
     transform: translateY(0);
 }
 
+/* Fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
 
 /* =========================
    7. Section Interaction
@@ -173,13 +212,41 @@ button:hover {
     transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
+.project-card:active {
+    transform: scale(0.98);
+}
+
 .project-card:hover {
     background: #38bdf8;
     color: black;
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
 }
 
+.project-desc {
+    font-size: 0.95rem;
+    margin: 8px 0;
+}
+
+.project-tech {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    margin-bottom: 10px;
+}
+
+.project-links {
+    display: flex;
+    gap: 10px;
+}
+
+.project-links a {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.project-links a:hover {
+    text-decoration: underline;
+}
 
 /* =========================
    10. Footer
