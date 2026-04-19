@@ -1,6 +1,11 @@
 /* =========================
-   Base / Reset
+   1. Base / Reset
 ========================= */
+html {
+    scroll-padding-top: 110px;
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: system-ui, -apple-system, sans-serif;
     margin: 0;
@@ -12,13 +17,9 @@ h1, h2 {
     margin-bottom: 10px;
 }
 
-html {
-    scroll-behavior: smooth;
-}
-
 
 /* =========================
-   Layout
+   2. Layout
 ========================= */
 main {
     display: flex;
@@ -26,7 +27,7 @@ main {
     align-items: center;
 }
 
-section {
+.section {
     width: 80%;
     max-width: 800px;
     margin: 15px;
@@ -36,20 +37,9 @@ section {
     transition: transform 0.3s ease;
 }
 
-/* =========================
-  Anchor offset fix 
-  (for sticky navbar)
-========================= */
-#hero,
-#about,
-#skills,
-#projects,
-#contact {
-    scroll-margin-top: 80px;
-}
 
 /* =========================
-   Navigation
+   3. Navigation
 ========================= */
 nav {
     display: flex;
@@ -57,6 +47,7 @@ nav {
     gap: 20px;
     padding: 15px;
     background-color: #000;
+    backdrop-filter: blur(10px);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -68,7 +59,8 @@ nav a {
     font-weight: bold;
 }
 
-nav a:hover {
+nav a:hover,
+nav a.active {
     color: #38bdf8;
 }
 
@@ -81,8 +73,9 @@ nav a:last-child::after {
     content: "";
 }
 
+
 /* =========================
-   Buttons
+   4. Buttons
 ========================= */
 button {
     padding: 10px 15px;
@@ -92,34 +85,30 @@ button {
     background-color: #333;
     color: white;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
 button:hover {
     background-color: #555;
+    transform: translateY(-1px);
 }
 
 
 /* =========================
-   Hero
+   5. Hero
 ========================= */
 #hero {
     text-align: center;
 }
 
-#hero:hover {
-    transform: translateY(-3px);
-}
-
 
 /* =========================
-   Reveal Animation
+   6. Animations
 ========================= */
 .reveal {
     opacity: 0;
     transform: translateY(40px);
     transition: opacity 0.6s ease, transform 0.6s ease;
-    will-change: opacity, transform;
 }
 
 .reveal.active {
@@ -129,7 +118,7 @@ button:hover {
 
 
 /* =========================
-   Section Interaction
+   7. Section Interaction
 ========================= */
 .section-content {
     transition: transform 0.3s ease;
@@ -141,7 +130,7 @@ button:hover {
 
 
 /* =========================
-   Skills
+   8. Skills
 ========================= */
 .skills-container {
     display: grid;
@@ -168,7 +157,7 @@ button:hover {
 
 
 /* =========================
-   Projects
+   9. Projects
 ========================= */
 #projects {
     display: flex;
@@ -181,18 +170,19 @@ button:hover {
     padding: 15px;
     border-radius: 8px;
     margin-top: 10px;
-    transition: background 0.2s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .project-card:hover {
     background: #38bdf8;
     color: black;
-    transform: scale(1.02);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 
 /* =========================
-   Footer
+   10. Footer
 ========================= */
 footer {
     text-align: center;
@@ -203,7 +193,7 @@ footer {
 
 
 /* =========================
-   Dark Mode
+   11. Dark Mode
 ========================= */
 body.dark {
     background-color: #121212;
@@ -214,41 +204,30 @@ body.dark nav {
     background: #000;
 }
 
-body.dark section {
+body.dark .section {
     background: #1e1e1e;
 }
 
-body.dark .skills-container div {
-    background: #2a2a2a;
-}
-
+body.dark .skills-container div,
 body.dark .project-card {
     background: #2a2a2a;
 }
 
 
 /* =========================
-   Responsive
+   12. Responsive
 ========================= */
 @media (max-width: 600px) {
     nav {
-        flex-direction: row;
         flex-wrap: wrap;
+        flex-direction: row;
         justify-content: center;
         gap: 10px;
     }
 
-    section {
+    .section {
         width: 95%;
         margin: 10px 0;
-    }
-
-    #hero,
-    #about,
-    #skills,
-    #projects,
-    #contact {
-        scroll-margin-top: 100px;
     }
 
     .skills-container {
