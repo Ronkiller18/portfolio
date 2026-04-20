@@ -1,17 +1,19 @@
 /* =========================
-   1. Base / Reset
+   1. Reset & Base
 ========================= */
 html {
     scroll-padding-top: 110px;
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 body {
-    font-family: system-ui, -apple-system, sans-serif;
-    animation: fadeIn 0.6s ease;
     margin: 0;
+    padding-top: 80px; /* adjust if needed */
+    font-family: system-ui, -apple-system, sans-serif;
     background-color: #0f172a;
     color: #e2e8f0;
+    overflow-x: hidden;
 }
 
 h1, h2 {
@@ -26,6 +28,7 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
+    animation: fadeIn 0.6s ease;
 }
 
 .section {
@@ -38,27 +41,42 @@ main {
     transition: transform 0.3s ease;
 }
 
+.section-content {
+    transition: transform 0.3s ease;
+}
+
+.section-content:hover {
+    transform: translateY(-3px);
+}
+
 
 /* =========================
    3. Navigation
 ========================= */
 nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+
+    width: 100%;
+    padding: 15px;
+
     display: flex;
     justify-content: center;
     gap: 20px;
-    padding: 15px;
-    background-color: #000;
-    backdrop-filter: blur(10px);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+
+    background: rgba(0, 0, 0, 0.95);
 }
 
 nav a {
+    position: relative;
+    padding-bottom: 5px;
+
     color: #e2e8f0;
     text-decoration: none;
-    position: relative;
     font-weight: bold;
+    transition: transform 0.15s ease, opacity 0.15s ease;
 }
 
 nav a:hover,
@@ -69,53 +87,25 @@ nav a.active {
 nav a::before {
     content: "";
     position: absolute;
-    bottom: -5px;
-    left: 50%;
+    bottom: 0;
+    left: 0;
+
     width: 0%;
     height: 2px;
+
     background: #38bdf8;
-    transition: width 0.3s ease, left 0.3s ease;
+    transition: width 0.3s ease;
 }
 
 nav a:hover::before,
 nav a.active::before {
     width: 100%;
-    left: 0;
 }
 
-nav a::after {
-    content: "|";
-    margin-left: 10px;
-}
-
-nav a:last-child::after {
-    content: "";
-}
 
 /* =========================
-   4. Buttons
+   4. Buttons & Links
 ========================= */
-button {
-    padding: 10px 15px;
-    margin: 10px 5px;
-    border: none;
-    border-radius: 5px;
-    background-color: #333;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-}
-
-button:hover {
-    background-color: #555;
-    transform: translateY(-1px);
-}
-
-a:focus, button:focus {
-    outline: 2px solid #38bdf8;
-    outline-offset: 2px;
-}
-
 a, button {
     transition: transform 0.15s ease, opacity 0.15s ease;
 }
@@ -125,6 +115,40 @@ a:hover, button:hover {
     opacity: 0.9;
 }
 
+a:focus, button:focus {
+    outline: 2px solid #38bdf8;
+    outline-offset: 2px;
+}
+
+button {
+    padding: 10px 15px;
+    margin: 10px 5px;
+
+    border: none;
+    border-radius: 5px;
+
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+.cta-btn {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 15px;
+
+    background: #38bdf8;
+    color: black;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+
 /* =========================
    5. Hero
 ========================= */
@@ -132,9 +156,20 @@ a:hover, button:hover {
     text-align: center;
 }
 
+.hero-tagline {
+    opacity: 0.8;
+    font-size: 1rem;
+}
+
+
 /* =========================
    6. Animations
 ========================= */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
 .reveal {
     opacity: 0;
     transform: translateY(40px);
@@ -146,30 +181,9 @@ a:hover, button:hover {
     transform: translateY(0);
 }
 
-/* Fade-in animation */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
 
 /* =========================
-   7. Section Interaction
-========================= */
-.section-content {
-    transition: transform 0.3s ease;
-}
-
-.section-content:hover {
-    transform: translateY(-3px);
-}
-
-
-/* =========================
-   8. Skills
+   7. Skills
 ========================= */
 .skills-container {
     display: grid;
@@ -182,8 +196,9 @@ a:hover, button:hover {
 
 .skills-container div {
     text-align: center;
-    background: #334155;
     padding: 10px 15px;
+
+    background: #334155;
     border-radius: 6px;
     transition: transform 0.2s ease, background 0.2s ease;
 }
@@ -196,7 +211,7 @@ a:hover, button:hover {
 
 
 /* =========================
-   9. Projects
+   8. Projects
 ========================= */
 #projects {
     display: flex;
@@ -205,15 +220,13 @@ a:hover, button:hover {
 }
 
 .project-card {
-    background: #435875;
-    padding: 15px;
-    border-radius: 8px;
     margin-top: 10px;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
+    padding: 15px;
 
-.project-card:active {
-    transform: scale(0.98);
+    background: #435875;
+    border-radius: 8px;
+
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .project-card:hover {
@@ -223,15 +236,30 @@ a:hover, button:hover {
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
 }
 
+.project-card:active {
+    transform: scale(0.98);
+}
+
 .project-desc {
-    font-size: 0.95rem;
     margin: 8px 0;
+    font-size: 0.95rem;
+}
+
+.project-details {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    line-height: 1.5;
 }
 
 .project-tech {
+    margin-bottom: 10px;
     font-size: 0.85rem;
     opacity: 0.8;
-    margin-bottom: 10px;
+}
+
+.project-note {
+    font-size: 0.8rem;
+    opacity: 0.6;
 }
 
 .project-links {
@@ -248,19 +276,24 @@ a:hover, button:hover {
     text-decoration: underline;
 }
 
+.hidden {
+    display: none;
+}
+
+
 /* =========================
-   10. Footer
+   9. Footer
 ========================= */
 footer {
-    text-align: center;
-    padding: 15px;
     margin-top: 20px;
+    padding: 15px;
+    text-align: center;
     background: #1e293b;
 }
 
 
 /* =========================
-   11. Dark Mode
+   10. Dark Mode
 ========================= */
 body.dark {
     background-color: #121212;
@@ -275,21 +308,47 @@ body.dark .section {
     background: #1e1e1e;
 }
 
+body.dark .cta-btn,
 body.dark .skills-container div,
 body.dark .project-card {
     background: #2a2a2a;
 }
 
+body.dark .cta-btn:hover,
+body.dark .skills-container div:hover,
+body.dark .project-card:hover {
+    color: #ffffff;
+}
+
 
 /* =========================
-   12. Responsive
+   11. Responsive
 ========================= */
 @media (max-width: 600px) {
+
+    body {
+        padding-top: 100px;
+    }
+
     nav {
-        flex-wrap: wrap;
-        flex-direction: row;
-        justify-content: center;
-        gap: 10px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        justify-content: flex-start;
+        gap: 12px;
+        padding: 10px;
+        scroll-padding-right: 20px;
+    }
+
+    nav a {
+        flex: 0 0 auto;
+    }
+
+    nav a:last-child {
+        margin-right: 20px; /* ✅ add this */
+    }
+
+    nav::-webkit-scrollbar {
+        display: none;
     }
 
     .section {
