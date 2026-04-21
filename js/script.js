@@ -22,6 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const navLinks = document.querySelectorAll("nav a");
   const sections = document.querySelectorAll("section[id]");
 
+  const progressBar = document.querySelector(".progress-bar");
+
 
   // =====================
   // 3. BUTTONS
@@ -78,56 +80,51 @@ document.addEventListener("DOMContentLoaded", () => {
 
   reveals.forEach(el => observer.observe(el));
 
+  // SCROLL PROGRESS BAR
+  let ticking = false;
 
-  // =====================
-  // 6. ACTIVE NAVBAR
-  // =====================
-  const setActiveNav = () => {
+    function updateProgressBar() {
+      const scrollTop = window.scrollY;
+      const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
 
+      const scrollPercent = (scrollTop / documentHeight) * 100;
+
+      progressBar.style.width = scrollPercent + "%";
+      ticking = false;
+    }
+
+      window.addEventListener("scroll", () => {
+        if (!ticking) {
+          window.requestAnimationFrame(updateProgressBar);
+          ticking = true;
+        }
+      });
+
+  // ==========================
+  // 6. ACTIVE SECTION TRACKER
+  // ==========================
+
+  function setActiveLink() {
     let currentSection = "";
 
-    // Get navbar height once
-    const navHeight = nav ? nav.offsetHeight : 0;
+    sections.forEach((section) => {
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.clientHeight;
 
-    sections.forEach(section => {
-
-      const rect = section.getBoundingClientRect();
-
-      // Check if section is at navbar position
-      if (rect.top <= navHeight && rect.bottom >= navHeight) {
-        currentSection = section.id;
+      if (window.scrollY >= sectionTop - sectionHeight * 0.3) {
+        currentSection = section.getAttribute("id");
       }
-
     });
 
-    navLinks.forEach(link => {
-
+    navLinks.forEach((link) => {
       link.classList.remove("active");
 
       if (link.getAttribute("href") === `#${currentSection}`) {
-
         link.classList.add("active");
-
-        // Scroll active link into view (mobile)
-        link.scrollIntoView({
-          behavior: "smooth",
-          inline: "center",
-          block: "nearest"
-        });
       }
-
     });
-  };
+  }
 
-
-  // =====================
-  // 7. INIT & EVENTS
-  // =====================
-
-  // Run on scroll
-  window.addEventListener("scroll", setActiveNav);
-
-  // Run once on load
-  setActiveNav();
+  window.addEventListener("scroll", setActiveLink);
 
 });

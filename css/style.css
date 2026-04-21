@@ -9,7 +9,7 @@ html {
 
 body {
     margin: 0;
-    padding-top: 80px; /* adjust if needed */
+    padding-top: 80px;
     font-family: system-ui, -apple-system, sans-serif;
     background-color: #0f172a;
     color: #e2e8f0;
@@ -31,6 +31,22 @@ main {
     animation: fadeIn 0.6s ease;
 }
 
+/*Scroll Progress-bar*/
+.progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    height: 3px;
+    width: 0%;
+
+    background: linear-gradient(to right, #00c6ff, #0072ff);
+
+    z-index: 9999;
+
+    transition: width 0.1s linear;
+}
+
 .section {
     width: 80%;
     max-width: 800px;
@@ -48,7 +64,6 @@ main {
 .section-content:hover {
     transform: translateY(-3px);
 }
-
 
 /* =========================
    3. Navigation
@@ -79,8 +94,12 @@ nav a {
     transition: transform 0.15s ease, opacity 0.15s ease;
 }
 
-nav a:hover,
 nav a.active {
+  color: #00c6ff;
+  border-bottom: 2px solid #00c6ff;
+}
+
+nav a:hover {
     color: #38bdf8;
 }
 
@@ -300,8 +319,8 @@ body.dark {
     color: #39FF14;
 }
 
-body.dark nav {
-    background: #000;
+body.dark .cta-btn {
+    color: #39FF14;
 }
 
 body.dark .section {
@@ -344,7 +363,7 @@ body.dark .project-card:hover {
     }
 
     nav a:last-child {
-        margin-right: 20px; /* ✅ add this */
+        margin-right: 20px;
     }
 
     nav::-webkit-scrollbar {
