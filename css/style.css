@@ -2,7 +2,7 @@
    1. Reset & Base
 ========================= */
 html {
-    scroll-padding-top: 110px;
+    scroll-padding-top: 120px;
     scroll-behavior: smooth;
     overflow-x: hidden;
 }
@@ -65,6 +65,36 @@ main {
     transform: translateY(-3px);
 }
 
+/* =====================
+   SECTION FOCUS SYSTEM
+===================== */
+section {
+  transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+}
+
+/* inactive sections */
+section:not(.active-section) {
+  opacity: 0.6;
+  transform: scale(0.98);
+}
+
+/* active section */
+section.active-section {
+  opacity: 1;
+  transform: scale(1);
+  border-left: 4px solid;
+}
+
+#hero.active-section {
+  padding-left: 1.5rem;
+}
+
+/* Ensure hero is strong on load */
+#hero {
+  opacity: 1;
+  transform: scale(1);
+}
+
 /* =========================
    3. Navigation
 ========================= */
@@ -125,7 +155,7 @@ nav a.active::before {
 /* =========================
    4. Buttons & Links
 ========================= */
-a, button {
+/*a, button {
     transition: transform 0.15s ease, opacity 0.15s ease;
 }
 
@@ -165,8 +195,75 @@ button:hover {
     text-decoration: none;
     border-radius: 5px;
     font-weight: bold;
+}*/
+
+a:focus, 
+button:focus {
+    outline: 2px solid #38bdf8;
+    outline-offset: 2px;
 }
 
+button,
+.details-btn,
+#darkModeToggle,
+#helloBtn {
+  padding: 10px 15px;
+  margin: 10px 5px;
+
+  border: none;
+  border-radius: 6px;
+
+  background-color: #333;
+  color: white;
+
+  cursor: pointer;
+
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+button:hover,
+.details-btn:hover,
+#darkModeToggle:hover,
+#helloBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+button:active,
+.details-btn:active,
+#darkModeToggle:active,
+#helloBtn:active {
+  transform: translateY(1px) scale(0.97);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.cta-btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 15px;
+
+  background: #38bdf8;
+  color: black;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+.cta-btn:active {
+  transform: translateY(1px) scale(0.97);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
 
 /* =========================
    5. Hero
@@ -200,6 +297,9 @@ button:hover {
     transform: translateY(0);
 }
 
+.clicked {
+  transform: translateY(1px) scale(0.97);
+}
 
 /* =========================
    7. Skills
@@ -339,6 +439,9 @@ body.dark .project-card:hover {
     color: #ffffff;
 }
 
+body.dark footer {
+  background-color: black;
+}
 
 /* =========================
    11. Responsive
@@ -374,6 +477,11 @@ body.dark .project-card:hover {
         width: 95%;
         margin: 10px 0;
     }
+
+    section.active-section {
+        border-left: none;
+        border-top: 3px solid white;
+  }
 
     .skills-container {
         grid-template-columns: 1fr;

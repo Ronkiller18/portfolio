@@ -18,6 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const detailButtons = document.querySelectorAll(".details-btn");
   const reveals = document.querySelectorAll(".reveal");
 
+  const interactiveElements = document.querySelectorAll("button, .cta-btn, .details-btn");
+
   const nav = document.getElementById("navbar");
   const navLinks = document.querySelectorAll("nav a");
   const sections = document.querySelectorAll("section[id]");
@@ -51,6 +53,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+// CLICK FEEDBACK (Optional)
+interactiveElements.forEach((el) => {
+  el.addEventListener("click", () => {
+    el.classList.add("clicked");
+
+    setTimeout(() => {
+      el.classList.remove("clicked");
+    }, 120);
+  });
+});
+
 
   // =====================
   // 4. DARK MODE
@@ -66,56 +79,54 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-
   // =====================
-  // 5. SCROLL REVEAL
+  // SCROLL ENGINE (UNIFIED)
   // =====================
-  const observer = new IntersectionObserver((entries) => {
 
-    entries.forEach(entry => {
-      entry.target.classList.toggle("active", entry.isIntersecting);
-    });
-
-  }, { threshold: 0.1 });
-
-  reveals.forEach(el => observer.observe(el));
-
-  // SCROLL PROGRESS BAR
   let ticking = false;
 
-    function updateProgressBar() {
-      const scrollTop = window.scrollY;
-      const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+  function updateOnScroll() {
+    const scrollTop = window.scrollY;
+    const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
 
-      const scrollPercent = (scrollTop / documentHeight) * 100;
+    // ---------------------
+    // PROGRESS BAR
+    // ---------------------
+    const scrollPercent = (scrollTop / documentHeight) * 100;
+    progressBar.style.width = scrollPercent + "%";
 
-      progressBar.style.width = scrollPercent + "%";
-      ticking = false;
-    }
-
-      window.addEventListener("scroll", () => {
-        if (!ticking) {
-          window.requestAnimationFrame(updateProgressBar);
-          ticking = true;
-        }
-      });
-
-  // ==========================
-  // 6. ACTIVE SECTION TRACKER
-  // ==========================
-
-  function setActiveLink() {
+    // ---------------------
+    // ACTIVE SECTION
+    // ---------------------
     let currentSection = "";
 
-    sections.forEach((section) => {
-      const sectionTop = section.offsetTop;
-      const sectionHeight = section.clientHeight;
+// ---------------------
+// DETECT ACTIVE SECTION
+// ---------------------
+sections.forEach((section) => {
+  const sectionTop = section.offsetTop - 120; // adjust for navbar height
 
-      if (window.scrollY >= sectionTop - sectionHeight * 0.3) {
-        currentSection = section.getAttribute("id");
-      }
-    });
+  if (scrollTop >= sectionTop) {
+    currentSection = section.getAttribute("id");
+  }
+});
 
+// ---------------------
+// FIX: BOTTOM EDGE CASE (OUTSIDE LOOP)
+// ---------------------
+if ((window.innerHeight + scrollTop) >= document.body.offsetHeight - 5) {
+  currentSection = sections[sections.length - 1].getAttribute("id");
+}
+
+// ---------------------
+// FIX: FALLBACK (IMPORTANT)
+// ---------------------
+if (!currentSection && sections.length > 0) {
+  currentSection = sections[0].getAttribute("id");
+}
+    // ---------------------
+    // NAV LINKS
+    // ---------------------
     navLinks.forEach((link) => {
       link.classList.remove("active");
 
@@ -123,8 +134,29 @@ document.addEventListener("DOMContentLoaded", () => {
         link.classList.add("active");
       }
     });
+
+    // ---------------------
+    // SECTION FOCUS (Day 19)
+    // ---------------------
+    sections.forEach((section) => {
+      section.classList.remove("active-section");
+
+      if (section.getAttribute("id") === currentSection) {
+        section.classList.add("active-section");
+      }
+    });
+
+    ticking = false;
   }
 
-  window.addEventListener("scroll", setActiveLink);
+  window.addEventListener("scroll", () => {
+    if (!ticking) {
+      window.requestAnimationFrame(updateOnScroll);
+      ticking = true;
+    }
+  });
+
+  // Initial state fix
+  window.addEventListener("load", updateOnScroll);
 
 });
