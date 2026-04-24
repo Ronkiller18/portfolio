@@ -77,29 +77,35 @@
                 <h2>Projects</h2>
                 
                 <div class="project-card">
+
+                    <div class="project-preview">
+                        <button class="preview-btn" data-url="https://ronkiller18.github.io/portfolio/">
+                            Preview
+                        </button>
+                    </div>
                     
                     <h3>Portfolio Website</h3>
 
-                    <p class="project-desc">
-                        A responsive portfolio with dark mode, smooth scrolling, and scroll reveal animations.
-                    </p>
-
                     <p class="project-tech">
                         HTML • CSS • JavaScript
+                    </p>
+
+
+                    <p class="project-desc">
+                        A responsive portfolio with dark mode, smooth scrolling, and scroll reveal animations.
                     </p>
 
                     <p class="project-role">
                         Role: Frontend Developer
                     </p>
 
-                    <div class="project-links">
+                     <div class="project-actions">
                         <a href="https://ronkiller18.github.io/portfolio/" target="_blank" rel="noopener noreferrer">🔗 Live</a>
                         <a href="https://github.com/Ronkiller18/portfolio" target="_blank" rel="noopener noreferrer">💻 Code</a>
+                        <button class="details-btn">View Details</button>
                     </div>
 
-                    <button class="details-btn">View Details</button>
-
-                    <div class="project-details hidden">
+                    <div class="project-details">
                         <ul>
                             <li>Built responsive layout using CSS Grid and Flexbox</li>
                             <li>Implemented dark mode toggle using classList</li>
@@ -129,9 +135,11 @@
                         Currently under development🐇
                     </p>
 
+                    <div class="project-actions">
                     <button class="details-btn">View Details</button>
+                    </div>
 
-                    <div class="project-details hidden">
+                    <div class="project-details">
                         <ul>
                             <li>Designing basic game mechanics using JavaScript</li>
                             <li>Handling user input and game state</li>
@@ -161,7 +169,26 @@
         <p>© 2026 Rushikesh • Built with HTML, CSS & JavaScript</p>
     </footer>
 
-    <script src="js/script.js"></script>
+    <div class="preview-modal" id="previewModal">
+        <div class="preview-overlay"></div>
 
+        <div class="preview-content">
+            <button class="preview-close">&times;</button>
+
+            <div class="preview-loader" id="previewLoader">
+                <div class="spinner"></div>
+                <p>Loading preview...</p>
+            </div>
+
+            <div class="preview-fallback hidden" id="previewFallback">
+                <p>Preview not available</p>
+                <a id="openLiveLink" target="_blank">Open Live Site</a>
+            </div>
+
+            <iframe id="previewFrame" src="" loading="lazy"></iframe>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
 </body>
 </html>

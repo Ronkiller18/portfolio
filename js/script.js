@@ -26,6 +26,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const progressBar = document.querySelector(".progress-bar");
 
+  const navHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-height'));
+
 
   // =====================
   // 3. BUTTONS
@@ -42,27 +44,30 @@ document.addEventListener("DOMContentLoaded", () => {
   detailButtons.forEach(btn => {
     btn.addEventListener("click", () => {
 
-      const details = btn.nextElementSibling;
+      const card = btn.closest(".project-card");
+      const details = card.querySelector(".project-details");
+
       if (!details) return;
 
-      details.classList.toggle("hidden");
+      details.classList.toggle("show");
 
-      btn.textContent = details.classList.contains("hidden")
-        ? "View Details"
-        : "Hide Details";
+      btn.textContent = details.classList.contains("show")
+      ? "View Details"
+      : "Hide Details";
+
     });
   });
 
-// CLICK FEEDBACK (Optional)
-interactiveElements.forEach((el) => {
-  el.addEventListener("click", () => {
-    el.classList.add("clicked");
+  // CLICK FEEDBACK (Optional)
+  interactiveElements.forEach((el) => {
+    el.addEventListener("click", () => {
+      el.classList.add("clicked");
 
-    setTimeout(() => {
-      el.classList.remove("clicked");
-    }, 120);
+      setTimeout(() => {
+        el.classList.remove("clicked");
+      }, 120);
+    });
   });
-});
 
 
   // =====================
@@ -76,6 +81,19 @@ interactiveElements.forEach((el) => {
       toggle.textContent = document.body.classList.contains("dark")
         ? "☀️ Light Mode"
         : "🌙 Dark Mode";
+    });
+  }
+
+  // ADD THIS ↓
+  if (nav) {
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 20) {
+        nav.classList.add("nav-scrolled");
+      }
+      else {
+        nav.classList.remove("nav-scrolled");
+      }
+
     });
   }
 
@@ -93,37 +111,121 @@ interactiveElements.forEach((el) => {
     // PROGRESS BAR
     // ---------------------
     const scrollPercent = (scrollTop / documentHeight) * 100;
+    if (progressBar) {
     progressBar.style.width = scrollPercent + "%";
+    }
 
     // ---------------------
     // ACTIVE SECTION
     // ---------------------
     let currentSection = "";
 
-// ---------------------
-// DETECT ACTIVE SECTION
-// ---------------------
-sections.forEach((section) => {
-  const sectionTop = section.offsetTop - 120; // adjust for navbar height
+    // ---------------------
+    // DETECT ACTIVE SECTION
+    // ---------------------
+    sections.forEach((section) => {
+      const sectionTop = section.offsetTop - navHeight;
+      if (scrollTop >= sectionTop) {
+        currentSection = section.getAttribute("id");
+      }
+    });
 
-  if (scrollTop >= sectionTop) {
-    currentSection = section.getAttribute("id");
-  }
-});
+    //------------------
+    // Preview System
+    //------------------
 
-// ---------------------
-// FIX: BOTTOM EDGE CASE (OUTSIDE LOOP)
-// ---------------------
-if ((window.innerHeight + scrollTop) >= document.body.offsetHeight - 5) {
-  currentSection = sections[sections.length - 1].getAttribute("id");
-}
+    // ===== DOM Elements =====
+    const modal = document.getElementById("previewModal");
+    const frame = document.getElementById("previewFrame");
+    const closeBtn = document.querySelector(".preview-close");
+    const overlay = document.querySelector(".preview-overlay");
 
-// ---------------------
-// FIX: FALLBACK (IMPORTANT)
-// ---------------------
-if (!currentSection && sections.length > 0) {
-  currentSection = sections[0].getAttribute("id");
-}
+    const loader = document.getElementById("previewLoader");
+    const fallback = document.getElementById("previewFallback");
+    const openLink = document.getElementById("openLiveLink");
+
+    let fallbackTimeout;
+    let isFrameLoaded = false;
+
+
+    // ===== Open Modal =====
+    document.querySelectorAll(".preview-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const url = btn.dataset.url;
+        if (!url) return;
+
+        isFrameLoaded = false;
+
+        // Reset states
+        frame.classList.remove("loaded");
+        loader.classList.remove("hidden");
+        fallback.classList.add("hidden");
+
+        openLink.href = url;
+
+        // Open modal first (better UX)
+        modal.classList.add("active");
+        document.body.classList.add("no-scroll");
+
+        // Load content
+        frame.src = url;
+
+        // Handle fallback (timeout)
+        clearTimeout(fallbackTimeout);
+
+        fallbackTimeout = setTimeout(() => {
+          if (isFrameLoaded) return;
+
+          loader.classList.add("hidden");
+          fallback.classList.remove("hidden");
+        }, 3000);
+      });
+    });
+
+
+    // ===== iframe Load Event (Attach ONCE) =====
+    frame.addEventListener("load", () => {
+      isFrameLoaded = true;
+
+      loader.classList.add("hidden");
+      frame.classList.add("loaded");
+    });
+
+
+    // ===== Close Modal =====
+    function closeModal() {
+      modal.classList.remove("active");
+      frame.src = "";
+
+      isFrameLoaded = false;
+      clearTimeout(fallbackTimeout);
+
+      loader.classList.remove("hidden");
+      fallback.classList.add("hidden");
+
+      document.body.classList.remove("no-scroll");
+    }
+
+
+    // ===== Close Events =====
+    closeBtn.addEventListener("click", closeModal);
+    overlay.addEventListener("click", closeModal);
+
+
+    // ---------------------
+    // FIX: BOTTOM EDGE CASE (OUTSIDE LOOP)
+    // ---------------------
+    if ((window.innerHeight + scrollTop) >= document.body.offsetHeight - 5) {
+      currentSection = sections[sections.length - 1].getAttribute("id");
+    }
+
+    // ---------------------
+    // FIX: FALLBACK (IMPORTANT)
+    // ---------------------
+    if (!currentSection && sections.length > 0) {
+      currentSection = sections[0].getAttribute("id");
+    }
+    
     // ---------------------
     // NAV LINKS
     // ---------------------
