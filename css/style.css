@@ -74,7 +74,10 @@ main {
    SECTION FOCUS SYSTEM
 ===================== */
 section {
-  transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+    box-sizing: border-box;
+    padding-left: 1.5rem;
+    padding-right: 1rem;
+    transition: opacity 0.25s ease-out, transform 0.25s ease-out;
 }
 
 /* inactive sections */
@@ -88,11 +91,6 @@ section.active-section {
   opacity: 1;
   transform: scale(1);
   border-left: 8px solid;
-}
-
-#hero.active-section {
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
 }
 
 /* =========================
@@ -570,6 +568,11 @@ body.dark footer {
 
     nav::-webkit-scrollbar {
         display: none;
+    }
+
+    section {
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
 
     .section {
