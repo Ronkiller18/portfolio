@@ -28,6 +28,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const navHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-height'));
 
+  let isPreviewOpen = false;
+  let isAnimating = false;
+  let loaded = false;
+
 
   // =====================
   // 3. BUTTONS
@@ -97,6 +101,106 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+   // =====================
+// 5. PREVIEW SYSTEM
+// =====================
+
+// DOM Elements
+const modal = document.getElementById("previewModal");
+const frame = document.getElementById("previewFrame");
+const closeBtn = document.querySelector(".preview-close");
+const overlay = document.querySelector(".preview-overlay");
+
+const loader = document.getElementById("previewLoader");
+const fallback = document.getElementById("previewFallback");
+const openLink = document.getElementById("openLiveLink");
+
+// State
+let fallbackTimeout;
+
+// ---------------------
+// OPEN MODAL
+// ---------------------
+document.querySelectorAll(".preview-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+
+    if (isAnimating) return;
+
+    const url = btn.dataset.url;
+    if (!url) return;
+
+    isPreviewOpen = true;
+    loaded = false;
+
+    // Reset UI
+    frame.classList.remove("loaded");
+    loader.classList.remove("hidden");
+    fallback.classList.add("hidden");
+
+    openLink.href = url;
+
+    // Open modal
+    modal.classList.add("active");
+    document.body.classList.add("no-scroll");
+
+    // Load iframe
+    frame.src = url;
+
+    // Fallback
+    clearTimeout(fallbackTimeout);
+    fallbackTimeout = setTimeout(() => {
+      if (!loaded) {
+        loader.classList.add("hidden");
+        fallback.classList.remove("hidden");
+      }
+    }, 3000);
+
+  });
+});
+
+// ---------------------
+// FRAME LOAD
+// ---------------------
+frame.addEventListener("load", () => {
+  loaded = true;
+
+  setTimeout(() => {
+    loader.classList.add("hidden");
+    frame.classList.add("loaded");
+  }, 150);
+});
+
+// ---------------------
+// CLOSE MODAL
+// ---------------------
+function closeModal() {
+  modal.classList.remove("active");
+
+  setTimeout(() => {
+    frame.src = "";
+    loader.classList.remove("hidden");
+    fallback.classList.add("hidden");
+
+    document.body.classList.remove("no-scroll");
+
+    isPreviewOpen = false;
+    loaded = false;
+  }, 200);
+}
+
+// ---------------------
+// CLOSE EVENTS
+// ---------------------
+if (closeBtn) closeBtn.addEventListener("click", closeModal);
+if (overlay) overlay.addEventListener("click", closeModal);
+
+// ESC key
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && isPreviewOpen) {
+    closeModal();
+  }
+});
+
   // =====================
   // SCROLL ENGINE (UNIFIED)
   // =====================
@@ -129,88 +233,6 @@ document.addEventListener("DOMContentLoaded", () => {
         currentSection = section.getAttribute("id");
       }
     });
-
-    //------------------
-    // Preview System
-    //------------------
-
-    // ===== DOM Elements =====
-    const modal = document.getElementById("previewModal");
-    const frame = document.getElementById("previewFrame");
-    const closeBtn = document.querySelector(".preview-close");
-    const overlay = document.querySelector(".preview-overlay");
-
-    const loader = document.getElementById("previewLoader");
-    const fallback = document.getElementById("previewFallback");
-    const openLink = document.getElementById("openLiveLink");
-
-    let fallbackTimeout;
-    let isFrameLoaded = false;
-
-
-    // ===== Open Modal =====
-    document.querySelectorAll(".preview-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const url = btn.dataset.url;
-        if (!url) return;
-
-        isFrameLoaded = false;
-
-        // Reset states
-        frame.classList.remove("loaded");
-        loader.classList.remove("hidden");
-        fallback.classList.add("hidden");
-
-        openLink.href = url;
-
-        // Open modal first (better UX)
-        modal.classList.add("active");
-        document.body.classList.add("no-scroll");
-
-        // Load content
-        frame.src = url;
-
-        // Handle fallback (timeout)
-        clearTimeout(fallbackTimeout);
-
-        fallbackTimeout = setTimeout(() => {
-          if (isFrameLoaded) return;
-
-          loader.classList.add("hidden");
-          fallback.classList.remove("hidden");
-        }, 3000);
-      });
-    });
-
-
-    // ===== iframe Load Event (Attach ONCE) =====
-    frame.addEventListener("load", () => {
-      isFrameLoaded = true;
-
-      loader.classList.add("hidden");
-      frame.classList.add("loaded");
-    });
-
-
-    // ===== Close Modal =====
-    function closeModal() {
-      modal.classList.remove("active");
-      frame.src = "";
-
-      isFrameLoaded = false;
-      clearTimeout(fallbackTimeout);
-
-      loader.classList.remove("hidden");
-      fallback.classList.add("hidden");
-
-      document.body.classList.remove("no-scroll");
-    }
-
-
-    // ===== Close Events =====
-    closeBtn.addEventListener("click", closeModal);
-    overlay.addEventListener("click", closeModal);
-
 
     // ---------------------
     // FIX: BOTTOM EDGE CASE (OUTSIDE LOOP)
@@ -252,11 +274,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   window.addEventListener("scroll", () => {
-    if (!ticking) {
-      window.requestAnimationFrame(updateOnScroll);
-      ticking = true;
-    }
-  });
+  if (!ticking) {
+    window.requestAnimationFrame(updateOnScroll);
+    ticking = true;
+  }
+}, { passive: true });
 
   // Initial state fix
   window.addEventListener("load", updateOnScroll);
