@@ -49,11 +49,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!details) return;
 
-      details.classList.toggle("show");
+      const isOpen = details.classList.toggle("show");
 
-      btn.textContent = details.classList.contains("show")
-      ? "View Details"
-      : "Hide Details";
+      btn.textContent = isOpen
+        ? "Hide Details"
+        : "View Details";
 
     });
   });
