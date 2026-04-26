@@ -7,6 +7,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // =====================
   const name = "Rushikesh";
 
+  let isPreviewOpen = false;
+  let fallbackTimeout;
+  let lastFocusedElement = null;
+  let loaded = false;
 
   // =====================
   // 2. DOM ELEMENTS
@@ -16,70 +20,63 @@ document.addEventListener("DOMContentLoaded", () => {
   const toggle = document.getElementById("darkModeToggle");
 
   const detailButtons = document.querySelectorAll(".details-btn");
-  const reveals = document.querySelectorAll(".reveal");
-
   const interactiveElements = document.querySelectorAll("button, .cta-btn, .details-btn");
 
   const nav = document.getElementById("navbar");
   const navLinks = document.querySelectorAll("nav a");
   const sections = document.querySelectorAll("section[id]");
-
   const progressBar = document.querySelector(".progress-bar");
 
-  const navHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-height'));
+  const navHeight = parseInt(
+    getComputedStyle(document.documentElement).getPropertyValue('--nav-height')
+  );
 
-  let isPreviewOpen = false;
-  let isAnimating = false;
-  let loaded = false;
-
+  // =====================
+  // PREVIEW ELEMENTS (Grouped)
+  // =====================
+  const preview = {
+    modal: document.getElementById("previewModal"),
+    frame: document.getElementById("previewFrame"),
+    closeBtn: document.querySelector(".preview-close"),
+    overlay: document.querySelector(".preview-overlay"),
+    loader: document.getElementById("previewLoader"),
+    fallback: document.getElementById("previewFallback"),
+    openLink: document.getElementById("openLiveLink")
+  };
 
   // =====================
   // 3. BUTTONS
   // =====================
 
-  // Hello Button
   if (button && message) {
     button.addEventListener("click", () => {
       message.textContent = `Hello ${name} 👋`;
     });
   }
 
-  // Detail Buttons
   detailButtons.forEach(btn => {
     btn.addEventListener("click", () => {
-
       const card = btn.closest(".project-card");
       const details = card.querySelector(".project-details");
-
       if (!details) return;
 
       const isOpen = details.classList.toggle("show");
-
-      btn.textContent = isOpen
-        ? "Hide Details"
-        : "View Details";
-
+      btn.textContent = isOpen ? "Hide Details" : "View Details";
     });
   });
 
-  // CLICK FEEDBACK (Optional)
   interactiveElements.forEach((el) => {
     el.addEventListener("click", () => {
       el.classList.add("clicked");
-
-      setTimeout(() => {
-        el.classList.remove("clicked");
-      }, 120);
+      setTimeout(() => el.classList.remove("clicked"), 120);
     });
   });
-
 
   // =====================
   // 4. DARK MODE
   // =====================
   if (toggle) {
     toggle.addEventListener("click", () => {
-
       document.body.classList.toggle("dark");
 
       toggle.textContent = document.body.classList.contains("dark")
@@ -88,136 +85,104 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ADD THIS ↓
+  // NAV SCROLL EFFECT
   if (nav) {
     window.addEventListener("scroll", () => {
       if (window.scrollY > 20) {
         nav.classList.add("nav-scrolled");
-      }
-      else {
+      } else {
         nav.classList.remove("nav-scrolled");
       }
-
     });
   }
 
-   // =====================
-// 5. PREVIEW SYSTEM
-// =====================
+  // =====================
+  // 5. PREVIEW SYSTEM
+  // =====================
 
-// DOM Elements
-const modal = document.getElementById("previewModal");
-const frame = document.getElementById("previewFrame");
-const closeBtn = document.querySelector(".preview-close");
-const overlay = document.querySelector(".preview-overlay");
+  document.querySelectorAll(".preview-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
 
-const loader = document.getElementById("previewLoader");
-const fallback = document.getElementById("previewFallback");
-const openLink = document.getElementById("openLiveLink");
+      if (isPreviewOpen) return;
 
-// State
-let fallbackTimeout;
+      loaded = false;
 
-// ---------------------
-// OPEN MODAL
-// ---------------------
-document.querySelectorAll(".preview-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
+      const url = btn.dataset.url;
+      if (!url) return;
 
-    if (isAnimating) return;
-    if (isPreviewOpen) return;
+      lastFocusedElement = btn;
+      isPreviewOpen = true;
 
-    const url = btn.dataset.url;
-    if (!url) return;
+      // Reset UI
+      preview.frame.classList.remove("loaded");
+      preview.loader.classList.remove("hidden");
+      preview.fallback.classList.add("hidden");
 
-    isPreviewOpen = true;
-    loaded = false;
+      preview.openLink.href = url;
 
-    //Focus trap
-    document.addEventListener("keydown", (e) => {
-  if (!isPreviewOpen) return;
+      // Open modal
+      preview.modal.classList.add("active");
+      document.body.classList.add("no-scroll");
+      preview.modal.setAttribute("aria-hidden", "false");
 
-  if (e.key === "Escape") {
-    closeModal();
-  }
+      if (preview.closeBtn) preview.closeBtn.focus();
 
-  // Prevent background scroll with space/arrow
-  if (["ArrowUp", "ArrowDown", "Space"].includes(e.key)) {
-    e.preventDefault();
-  }
-});
+      // Load iframe
+      preview.frame.src = url;
 
-    // Reset UI
-    frame.classList.remove("loaded");
-    loader.classList.remove("hidden");
-    fallback.classList.add("hidden");
+      // Fallback
+      clearTimeout(fallbackTimeout);
+      fallbackTimeout = setTimeout(() => {
+        if (!loaded) {
+          preview.loader.classList.add("hidden");
+          preview.fallback.classList.remove("hidden");
+        }
+      }, 3000);
 
-    openLink.href = url;
-
-    // Open modal
-    modal.classList.add("active");
-    document.body.classList.add("no-scroll");
-
-    // Load iframe
-    frame.src = url;
-
-    // Fallback
-    clearTimeout(fallbackTimeout);
-    fallbackTimeout = setTimeout(() => {
-      if (!loaded) {
-        loader.classList.add("hidden");
-        fallback.classList.remove("hidden");
-      }
-    }, 3000);
-
+    });
   });
-});
 
-// ---------------------
-// FRAME LOAD
-// ---------------------
-frame.addEventListener("load", () => {
-  loaded = true;
+  // FRAME LOAD
+  preview.frame.addEventListener("load", () => {
+    loaded = true;
+    
+    setTimeout(() => {
+      preview.loader.classList.add("hidden");
+      preview.frame.classList.add("loaded");
+    }, 150);
+  });
 
-  setTimeout(() => {
-    loader.classList.add("hidden");
-    frame.classList.add("loaded");
-  }, 150);
-});
+  // CLOSE MODAL
+  function closeModal() {
+    preview.modal.classList.remove("active");
+    preview.modal.setAttribute("aria-hidden", "true");
 
-// ---------------------
-// CLOSE MODAL
-// ---------------------
-function closeModal() {
-  modal.classList.remove("active");
+    if (lastFocusedElement) {
+      lastFocusedElement.focus();
+    }
 
-  setTimeout(() => {
-    frame.src = "";
-    loader.classList.remove("hidden");
-    fallback.classList.add("hidden");
+    setTimeout(() => {
+      preview.frame.src = "";
+      preview.loader.classList.remove("hidden");
+      preview.fallback.classList.add("hidden");
 
-    document.body.classList.remove("no-scroll");
-
-    isPreviewOpen = false;
-    loaded = false;
-  }, 200);
-}
-
-// ---------------------
-// CLOSE EVENTS
-// ---------------------
-if (closeBtn) {closeBtn.addEventListener("click", closeModal);}
-if (overlay) {overlay.addEventListener("click", closeModal);}
-
-// ESC key
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && isPreviewOpen) {
-    closeModal();
+      document.body.classList.remove("no-scroll");
+      isPreviewOpen = false;
+    }, 200);
   }
-});
+
+  // EVENTS
+  if (preview.closeBtn) preview.closeBtn.addEventListener("click", closeModal);
+  if (preview.overlay) preview.overlay.addEventListener("click", closeModal);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && isPreviewOpen) {
+      closeModal();
+    }
+  });
 
   // =====================
-  // SCROLL ENGINE (UNIFIED)
+  // 6. SCROLL ENGINE
   // =====================
 
   let ticking = false;
@@ -226,85 +191,61 @@ document.addEventListener("keydown", (e) => {
     const scrollTop = window.scrollY;
     const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
 
-    // ---------------------
-    // PROGRESS BAR
-    // ---------------------
-    const scrollPercent = (scrollTop / documentHeight) * 100;
     if (progressBar) {
-    progressBar.style.width = scrollPercent + "%";
+      progressBar.style.width = (scrollTop / documentHeight) * 100 + "%";
     }
 
-    // ---------------------
-    // ACTIVE SECTION
-    // ---------------------
     let currentSection = "";
 
-    // ---------------------
-    // DETECT ACTIVE SECTION
-    // ---------------------
     sections.forEach((section) => {
       const sectionTop = section.offsetTop - navHeight;
       if (scrollTop >= sectionTop) {
-        currentSection = section.getAttribute("id");
+        currentSection = section.id;
       }
     });
 
-    // ---------------------
-    // FIX: BOTTOM EDGE CASE (OUTSIDE LOOP)
-    // ---------------------
     if ((window.innerHeight + scrollTop) >= document.body.offsetHeight - 5) {
-      currentSection = sections[sections.length - 1].getAttribute("id");
+      currentSection = sections[sections.length - 1].id;
     }
 
-    // ---------------------
-    // FIX: FALLBACK (IMPORTANT)
-    // ---------------------
     if (!currentSection && sections.length > 0) {
-      currentSection = sections[0].getAttribute("id");
+      currentSection = sections[0].id;
     }
-    
-    // ---------------------
-    // NAV LINKS
-    // ---------------------
+
     navLinks.forEach((link) => {
       link.classList.remove("active");
-
       if (link.getAttribute("href") === `#${currentSection}`) {
         link.classList.add("active");
       }
     });
 
-    // ---------------------
-    // SECTION FOCUS (Day 19)
-    // ---------------------
     sections.forEach((section) => {
-      section.classList.remove("active-section");
-
-      if (section.getAttribute("id") === currentSection) {
-        section.classList.add("active-section");
-      }
+      section.classList.toggle("active-section", section.id === currentSection);
     });
 
     ticking = false;
   }
 
   window.addEventListener("scroll", () => {
-  if (!ticking) {
-    window.requestAnimationFrame(updateOnScroll);
-    ticking = true;
-  }
-}, { passive: true });
+    if (!ticking) {
+      requestAnimationFrame(updateOnScroll);
+      ticking = true;
+    }
+  }, { passive: true });
 
-  // Initial state fix
-  window.addEventListener("load", updateOnScroll);
+  // =====================
+  // PAGE LOADER
+  // =====================
 
-  const pageLoader = document.getElementById("pageLoader");
+  window.addEventListener("load", () => {
+    const loader = document.getElementById("pageLoader");
 
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    pageLoader.classList.add("hidden");
-    document.body.classList.add("loaded");
-  }, 300);
-});
+    if (loader) {
+      loader.style.opacity = "0";
+      setTimeout(() => {
+        loader.style.display = "none";
+      }, 300);
+    }
+  });
 
 });

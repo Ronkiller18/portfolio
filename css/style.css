@@ -1,7 +1,6 @@
 /* =========================
    1. Reset & Base
 ========================= */
-
 :root {
   --nav-height: 110px;
 }
@@ -15,14 +14,14 @@ html {
 #pageLoader {
   position: fixed;
   inset: 0;
-  background: #0f172a;
-  z-index: 99999;
+  background: #111;
+  z-index: 9999;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  transition: opacity 0.4s ease;
+  transition: opacity 0.3s ease;
 }
 
 #pageLoader.hidden {
@@ -212,6 +211,10 @@ button,
   transition: transform 0.1s ease, box-shadow 0.1s ease;
 
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+  transform: translateY(-2px);
 }
 
 #darkModeToggle:hover,
@@ -406,6 +409,7 @@ button:active,
 
 .project-card {
     margin-top: 10px;
+    margin-bottom: 8px;
     padding: 1.2rem;
 
     background: #435875;
@@ -437,12 +441,20 @@ button:active,
 
     transition: max-height 0.3s ease;
     margin-top: 10px;
-    font-size: 0.9rem;
+    font-size: 13px;
     line-height: 1.5;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 10px;
+}
+
+.project-details-list {
+  margin: 10px 0;
+  padding-left: 18px;
+  font-size: 14px;
 }
 
 .project-details.show {
-  max-height: 200px;
+  max-height: 500px;
 }
 
 .tech-label {
@@ -525,6 +537,7 @@ button:active,
   gap: 6px;
   margin-bottom: 10px;
   font-size: 12px;
+  opacity: 0.8;
 }
 
 .project-meta span {
@@ -552,8 +565,8 @@ button:active,
 
 .project-features {
   margin: 10px 0;
-  padding-left: 18px;
-  font-size: 14px;
+  padding-left: 16px;
+  font-size: 13px;
 }
 
 .project-features li {
@@ -576,13 +589,11 @@ button:active,
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.25s ease;
-   pointer-events: none;
 }
 
 .preview-modal.active {
   opacity: 1;
   visibility: visible;
-  pointer-events: auto;
 }
 
 .preview-modal.active .preview-content {
@@ -595,6 +606,11 @@ button:active,
   inset: 0;
   background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(4px);
+    opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+
+  z-index: 1;
 }
 
 .preview-btn {
@@ -613,7 +629,13 @@ button:active,
   color: #fff;
 }
 
+.preview-modal.active .preview-overlay {
+  opacity: 1;
+}
+
 .preview-content {
+  position: relative;
+
   width: 90%;
   max-width: 900px;
   height: 80vh;
@@ -622,11 +644,14 @@ button:active,
   border-radius: 10px;
   overflow: hidden;
 
-  position: relative;
+  margin: auto; /* ✅ THIS fixes centering */
 
   opacity: 0;
   transform: scale(0.95);
   transition: opacity 0.25s ease, transform 0.25s ease;
+
+  z-index: 2;
+  will-change: transform, opacity;
 }
 
 .preview-content iframe {
@@ -659,6 +684,15 @@ button:active,
   z-index: 2;
 
   transition: opacity 0.2s ease;
+}
+
+.preview-hint {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  opacity: 0.6;
 }
 
 .preview-loader.hidden {
@@ -711,6 +745,28 @@ button:active,
   opacity: 1;
 }
 
+/* Security */
+.security-points {
+  margin-top: 10px;
+  padding-left: 18px;
+  font-size: 14px;
+}
+
+.security-points li {
+  margin-bottom: 6px;
+}
+
+.project-security {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.project-security ul {
+  padding-left: 16px;
+  margin-top: 4px;
+}
+
 /* =========================
    9. Footer
 ========================= */
@@ -755,64 +811,76 @@ body.dark footer {
 }
 
 /* =========================
-   11. Responsive
+   15. RESPONSIVE (FULL - RESTORED)
 ========================= */
+
 @media (max-width: 600px) {
 
-     :root {
-        --nav-height: 80px;
-    }
+  :root {
+    --nav-height: 80px;
+  }
 
-    body {
-        padding-top: 100px;
-    }
+  body {
+    padding-top: 100px;
+  }
 
-    nav {
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        justify-content: flex-start;
-        gap: 12px;
-        padding: 10px;
-        scroll-padding-right: 20px;
-    }
+  /* NAVBAR (IMPORTANT FOR MOBILE SCROLL) */
+  nav {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 10px;
+    scroll-padding-right: 20px;
+  }
 
-    nav a {
-        flex: 0 0 auto;
-    }
+  nav a {
+    flex: 0 0 auto;
+  }
 
-    nav a:last-child {
-        margin-right: 20px;
-    }
+  nav a:last-child {
+    margin-right: 20px;
+  }
 
-    nav::-webkit-scrollbar {
-        display: none;
-    }
+  nav::-webkit-scrollbar {
+    display: none;
+  }
 
-    section {
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
+  /* SECTION SPACING */
+  section {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 
-    .hero-actions {
-      flex-direction: column;
-      align-items: center;
-    }
+  .section {
+    width: 95%;
+    margin: 10px 0;
+  }
 
-    .section {
-        width: 95%;
-        margin: 10px 0;
-    }
+  section.active-section {
+    border-left: none;
+    border-top: 3px solid white;
+  }
 
-    section.active-section {
-        border-left: none;
-        border-top: 3px solid white;
-    }
+  /* HERO STACKING */
+  .hero-actions {
+    flex-direction: column;
+    align-items: center;
+  }
 
-    .skills-container {
-        grid-template-columns: 1fr;
-    }
-
-    .project-actions {
+  /* SKILLS STACK */
+  .skills-container {
     grid-template-columns: 1fr;
+  }
+
+  /* PROJECT BUTTONS STACK */
+  .project-actions {
+    grid-template-columns: 1fr;
+  }
+
+  /* PREVIEW FIX */
+  .preview-content {
+    width: 95%;
+    height: 75vh;
   }
 }
