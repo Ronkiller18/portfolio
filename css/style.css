@@ -12,6 +12,29 @@ html {
     overflow-x: hidden;
 }
 
+#pageLoader {
+  position: fixed;
+  inset: 0;
+  background: #0f172a;
+  z-index: 99999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: opacity 0.4s ease;
+}
+
+#pageLoader.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+body.loaded #pageLoader {
+  opacity: 0;
+  pointer-events: none;
+}
+
 body {
     margin: 0;
     padding-top: 80px;
@@ -394,7 +417,7 @@ button:active,
 }
 
 .project-card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-6px) scale(1.01);
   box-shadow: 0 12px 24px rgba(0,0,0,0.25);
   cursor: pointer;
 }
@@ -571,6 +594,7 @@ button:active,
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
 }
 
 .preview-btn {
@@ -579,6 +603,7 @@ button:active,
   font-weight: 600;              /* 🔥 stronger presence */
   box-shadow: 0 4px 10px rgba(0,0,0,0.25);
   transform: translateY(0);
+  cursor: pointer;
 }
 
 .project-actions .preview-btn:hover {
@@ -667,6 +692,15 @@ button:active,
   align-items: center;
   background: #111;
   color: white;
+}
+
+.preview-fallback a {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: #38bdf8;
+  color: black;
+  border-radius: 6px;
+  text-decoration: none;
 }
 
 .preview-fallback.hidden {

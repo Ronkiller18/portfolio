@@ -125,12 +125,27 @@ document.querySelectorAll(".preview-btn").forEach(btn => {
   btn.addEventListener("click", () => {
 
     if (isAnimating) return;
+    if (isPreviewOpen) return;
 
     const url = btn.dataset.url;
     if (!url) return;
 
     isPreviewOpen = true;
     loaded = false;
+
+    //Focus trap
+    document.addEventListener("keydown", (e) => {
+  if (!isPreviewOpen) return;
+
+  if (e.key === "Escape") {
+    closeModal();
+  }
+
+  // Prevent background scroll with space/arrow
+  if (["ArrowUp", "ArrowDown", "Space"].includes(e.key)) {
+    e.preventDefault();
+  }
+});
 
     // Reset UI
     frame.classList.remove("loaded");
@@ -191,8 +206,8 @@ function closeModal() {
 // ---------------------
 // CLOSE EVENTS
 // ---------------------
-if (closeBtn) closeBtn.addEventListener("click", closeModal);
-if (overlay) overlay.addEventListener("click", closeModal);
+if (closeBtn) {closeBtn.addEventListener("click", closeModal);}
+if (overlay) {overlay.addEventListener("click", closeModal);}
 
 // ESC key
 document.addEventListener("keydown", (e) => {
@@ -282,5 +297,14 @@ document.addEventListener("keydown", (e) => {
 
   // Initial state fix
   window.addEventListener("load", updateOnScroll);
+
+  const pageLoader = document.getElementById("pageLoader");
+
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    pageLoader.classList.add("hidden");
+    document.body.classList.add("loaded");
+  }, 300);
+});
 
 });
