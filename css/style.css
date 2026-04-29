@@ -454,7 +454,7 @@ button:active,
 }
 
 .project-details.show {
-  max-height: 500px;
+  max-height: 2000px;
 }
 
 .tech-label {
@@ -759,7 +759,7 @@ button:active,
 .project-security {
   margin-top: 10px;
   font-size: 13px;
-  color: #9ca3af;
+ /*color: #9ca3af;*/
 }
 
 .project-security ul {
