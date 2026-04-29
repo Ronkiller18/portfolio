@@ -16,26 +16,109 @@
         <button data-tab="vuln">Vulnerable Example</button>
         <button data-tab="secure">Secure Example</button>
         <button data-tab="explain">Explanation</button>
+        <button data-tab="phishing">Phishing Check</button>
+        <button data-tab="compare">Compare</button>
     </nav>
 
     <main>
         <section id="vuln" class="tab active">
             <h2>Vulnerable Example</h2>
             <input type="text" id="userInput" placeholder="Enter something...">
+            
+            <p>Click to test a real attack:</p>
             <button onclick="displayInput()">Submit</button>
+            <button onclick="tryPayload()">Try Payload</button>
+
+            <button onclick="copyPayload()">Copy Payload</button>
+            <p id="copyStatus"></p>
 
             <div id="output"></div>
         </section>
 
         <section id="secure" class="tab">
-            <h2>Secure Example</h2>
+            <h2>Secure Example (Fixed)</h2>
+
+            <input type="text" id="safeInput" placeholder="Enter something...">
+            <button onclick="displaySafeInput()">Submit</button>
+
+            <div id="safeOutput"></div>
         </section>
 
         <section id="explain" class="tab">
             <h2>Explanation</h2>
+
+            <h3>What is XSS?</h3>
+            <p>
+                Cross-Site Scripting (XSS) is a vulnerability where attackers inject malicious
+                JavaScript into a web page, which then executes in the victim’s browser.
+            </p>
+
+            <h3>How the Vulnerability Works</h3>
+            <p>
+                In the vulnerable example, user input is directly inserted into the page using
+                <code>innerHTML</code>. This allows the browser to interpret the input as HTML and execute scripts.
+            </p>
+
+            <h3>Attack Example</h3>
+            <pre>&lt;img src=x onerror=alert('XSS')&gt;</pre>
+            <p>
+                This payload executes JavaScript when the image fails to load, demonstrating an XSS attack.
+            </p>
+
+            <h3>How It Was Fixed</h3>
+            <p>
+                The secure version uses <code>textContent</code> instead of <code>innerHTML</code>.
+                This ensures that user input is treated as plain text, not executable code.
+            </p>
+
+            <h3>Key Takeaway</h3>
+            <p>
+                Never trust user input. Always encode or sanitize data before rendering it in the browser.
+            </p>
+        </section>
+
+        <section id="phishing" class="tab">
+            <h2>Phishing Detection</h2>
+
+            <p>Identify whether the following URL is safe or phishing:</p>
+
+            <div id="question"></div>
+
+            <button onclick="checkAnswer(true)">Safe</button>
+            <button onclick="checkAnswer(false)">Phishing</button>
+
+            <p id="result"></p>
+        </section>
+
+        <section id="compare" class="tab">
+            <h2>Side-by-Side Comparison</h2>
+
+            <input type="text" id="compareInput" placeholder="Enter test input...">
+            <button onclick="runComparison()">Test Both</button>
+
+            <div class="compare-container">
+                
+                <div class="box">
+                    <h3>Vulnerable</h3>
+                    <div id="compareVuln"></div>
+                </div>
+
+                <div class="box">
+                    <h3>Secure</h3>
+                    <div id="compareSafe"></div>
+                </div>
+
+            </div>
         </section>
     </main>
 
+    <footer>
+        <p>
+            This project is for educational purposes only. It demonstrates common web vulnerabilities and their fixes.
+        </p>
+    </footer>
+
     <script src="script.js"></script>
+
 </body>
 </html>
