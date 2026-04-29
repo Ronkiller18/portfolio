@@ -746,6 +746,10 @@ button:active,
 }
 
 /* Security */
+#security {
+  min-height: 70vh;
+}
+
 .security-points {
   margin-top: 10px;
   padding-left: 18px;

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vulnerability Demo App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Vulnerability Demo App</h1>
+        <p>Learn how web vulnerabilities work and how to fix them</p>
+    </header>
+
+    <nav>
+        <button data-tab="vuln">Vulnerable Example</button>
+        <button data-tab="secure">Secure Example</button>
+        <button data-tab="explain">Explanation</button>
+    </nav>
+
+    <main>
+        <section id="vuln" class="tab active">
+            <h2>Vulnerable Example</h2>
+            <input type="text" id="userInput" placeholder="Enter something...">
+            <button onclick="displayInput()">Submit</button>
+
+            <div id="output"></div>
+        </section>
+
+        <section id="secure" class="tab">
+            <h2>Secure Example</h2>
+        </section>
+
+        <section id="explain" class="tab">
+            <h2>Explanation</h2>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
