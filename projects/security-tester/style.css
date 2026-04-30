@@ -1,0 +1,30 @@
+.analyzer {
+    max-width: 500px;
+}
+
+#results {
+    margin-top: 15px;
+    padding: 10px;
+    background: #4a5ba5;
+    border: 1px solid #334155;
+}
+
+.result {
+    margin-top: 10px;
+    padding: 10px;
+    border-left: 4px solid;
+}
+
+.result.high {
+    border-color: red;
+    background: #2a0f0f;
+}
+
+.result.medium {
+    border-color: orange;
+    background: #2a1f0f;
+}
+
+.safe {
+    color: lightgreen;
+}
