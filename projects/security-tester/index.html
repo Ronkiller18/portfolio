@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Client-Side Security Tester</title>
+        <p class="tag">Heuristic Security Analysis Tool</p>
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
@@ -17,9 +18,21 @@
                 <input type="text" id="inputData" placeholder="Enter URL or input...">
                 <button onclick="analyze()">Analyze</button>
 
+                <button onclick="exportResults()">Export JSON</button>
+
                 <div id="results"></div>
             </section>
+
+            <h3>Scan History</h3>
+            <ul id="history"></ul>
+
         </main>
+
+        <footer>
+            <p>
+                This project is for educational purposes only. It demonstrates common web vulnerabilities and their fixes.
+            </p>
+        </footer>
 
         <script src="script.js"></script>
     </body>
